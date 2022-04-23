@@ -1,0 +1,61 @@
+<%-- any content can be specified here e.g.: --%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.Random"%>
+<%@ page pageEncoding="UTF-8" %>
+<%
+    if(request.getParameter("logon") != null) {
+        session.setAttribute("username", request.getParameter("username"));
+        ArrayList listaNumeros = new ArrayList();
+        Random  r = new Random();
+
+                for(int i=0; i<6; i++){
+                    int n = r.nextInt(60)+1;
+                    if (listaNumeros.contains(n))
+                    {
+                        i--;
+                    }
+                    else
+                    {
+                        listaNumeros.add(n);
+                    }
+                }
+                session.setAttribute("arrayNaSessao", listaNumeros);
+                
+                response.sendRedirect(request.getRequestURI());
+    }
+    if(request.getParameter("logoff") != null) {
+        session.removeAttribute("username");
+        response.sendRedirect(request.getRequestURI());
+    }
+%>
+
+
+<nav class="navbar navbar-light" style="background-color:lightblue; border-radius: 15px 15px;">
+    <div class="container-fluid">
+  </div>
+ <%if (session.getAttribute("username") != null) {%>
+  <ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link" aria-current="page" href="index.jsp"><h6  style="color: black;">Index</h6></a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" aria-current="page" href="about.jsp"><h6  style="color: black;">Informações Claudinei</h6></a>
+  </li>
+  <li class="nav-item">
+      <a class="nav-link" aria-current="page" href="loteria.jsp"><h6 style="color: black;" >Resultados Loteria</h6></a>
+  </li>
+  <li>
+      <form>
+          <h5> Bem Vindo <b><%= session.getAttribute("username")%></b> <button type="submit" name="logoff" class="btn btn-danger">Loggout</button><h5>       
+      </form>
+  </li> 
+   </ul>
+   
+    <% } else {%>
+    <ul class="nav nav-tabs">
+<h6>
+    <a href="index.jsp">Clique Aqui para Logar!</a>
+</h6>
+<%}%>
+</ul>
+</nav>
